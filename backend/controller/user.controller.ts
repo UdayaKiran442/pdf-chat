@@ -1,5 +1,5 @@
 import type { IUsers } from "../repository/schema";
-import { createUserInDb, findUserByEmailFromDb } from "../repository/user.repository";
+import { createUserInDb, findUserByEmailFromDb, findUserByIdFromDb } from "../repository/user.repository";
 import type { ICreateUserSchema, ILoginUserSchema } from "../routes/user.route";
 import generateToken from "../utils/generateToken";
 
@@ -20,12 +20,20 @@ export async function loginUser(payload: ILoginUserSchema){
         if(user.password !== payload.password){
             return "Incorrect password"
         }
-        const token = generateToken(user.id);
+        const token = generateToken(user.userId);
         return {
             token,
             user
         }
     } catch (error) {
         return error
+    }
+}
+
+export async function getLoggedInUser(userId: string){
+    try {
+        return await findUserByIdFromDb(userId);
+    } catch (error) {
+        return error;
     }
 }

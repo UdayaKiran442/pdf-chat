@@ -1,10 +1,9 @@
 import jwt from "jsonwebtoken";
 
-// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-const generateToken = (id: any) => {
+const generateToken = (userId: string) => {
 	const token = jwt.sign(
 		{
-			_id: id,
+			userId: userId,
 		},
 		"secret",
 		{
